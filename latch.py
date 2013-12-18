@@ -118,11 +118,11 @@ class LatchResponse(object):
 class Latch(object):
     
     API_HOST = "latch.elevenpaths.com";
-    API_PORT = "443";
     API_CHECK_STATUS_URL = "/api/0.6/status";
     API_PAIR_URL = "/api/0.6/pair";
     API_PAIR_WITH_ID_URL = "/api/0.6/pairWithId";
     API_UNPAIR_URL = "/api/0.6/unpair";
+    API_HTTPS = True
     
     AUTHORIZATION_HEADER_NAME = "Authorization";
     DATE_HEADER_NAME = "X-11Paths-Date";
@@ -134,6 +134,18 @@ class Latch(object):
     X_11PATHS_HEADER_PREFIX = "X-11paths-";
     X_11PATHS_HEADER_SEPARATOR = ":";
     
+    @staticmethod
+    def set_host(host):
+        '''
+        @param $host The host to be connected with (http://hostname) or (https://hostname)
+        '''
+        if host.startswith("http://"):
+            Latch.API_HOST = host[len("http://"):]
+            Latch.API_HTTPS = False
+        elif host.startswith("https://"):
+            Latch.API_HOST = host[len("https://"):]
+            Latch.API_HTTPS = True
+
     @staticmethod
     def get_part_from_header(part, header):
         '''
@@ -196,7 +208,10 @@ class Latch(object):
         import http.client
         authHeaders = self.authentication_headers("GET", url, xHeaders)
         #print(headers)
-        conn = http.client.HTTPSConnection(Latch.API_HOST, Latch.API_PORT)
+        if Latch.API_HTTPS:
+            conn = http.client.HTTPSConnection(Latch.API_HOST)
+        else: 
+            conn = http.client.HTTPConnection(Latch.API_HOST)
         conn.request("GET", url, headers=authHeaders)
         response = conn.getresponse()
         
