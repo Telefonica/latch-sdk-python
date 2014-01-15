@@ -118,6 +118,8 @@ class LatchResponse(object):
 class Latch(object):
     
     API_HOST = "latch.elevenpaths.com";
+    API_PROXY = None;
+    API_PROXY_PORT = None;
     API_CHECK_STATUS_URL = "/api/0.6/status";
     API_PAIR_URL = "/api/0.6/pair";
     API_PAIR_WITH_ID_URL = "/api/0.6/pairWithId";
@@ -145,6 +147,16 @@ class Latch(object):
         elif host.startswith("https://"):
             Latch.API_HOST = host[len("https://"):]
             Latch.API_HTTPS = True
+
+    @staticmethod
+    def set_proxy(proxy, port):
+        '''
+        Enable using a Proxy to connect to Latch Server (HTTPS-only)
+        @param $proxy The proxy server
+        @param $port The proxy port number
+        '''
+        Latch.API_PROXY = proxy
+        Latch.API_PROXY_PORT = port
 
     @staticmethod
     def get_part_from_header(part, header):
@@ -208,10 +220,15 @@ class Latch(object):
         import http.client
         authHeaders = self.authentication_headers("GET", url, xHeaders)
         #print(headers)
-        if Latch.API_HTTPS:
-            conn = http.client.HTTPSConnection(Latch.API_HOST)
-        else: 
-            conn = http.client.HTTPConnection(Latch.API_HOST)
+        if Latch.API_PROXY != None:
+            conn = http.client.HTTPSConnection(Latch.API_PROXY, Latch.API_PROXY_PORT)
+            conn.set_tunnel(Latch.API_HOST, 443)
+        else:
+            if Latch.API_HTTPS:
+                conn = http.client.HTTPSConnection(Latch.API_HOST)
+            else: 
+                conn = http.client.HTTPConnection(Latch.API_HOST)
+
         conn.request("GET", url, headers=authHeaders)
         response = conn.getresponse()
         
