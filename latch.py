@@ -118,11 +118,15 @@ class LatchResponse(object):
 class Latch(object):
     
     API_HOST = "latch.elevenpaths.com";
+    API_PORT = 443;
+    API_HTTPS = True
+    API_PROXY = None;
+    API_PROXY_PORT = None;
     API_CHECK_STATUS_URL = "/api/0.6/status";
     API_PAIR_URL = "/api/0.6/pair";
     API_PAIR_WITH_ID_URL = "/api/0.6/pairWithId";
     API_UNPAIR_URL = "/api/0.6/unpair";
-    API_HTTPS = True
+
     
     AUTHORIZATION_HEADER_NAME = "Authorization";
     DATE_HEADER_NAME = "X-11Paths-Date";
@@ -141,10 +145,22 @@ class Latch(object):
         '''
         if host.startswith("http://"):
             Latch.API_HOST = host[len("http://"):]
+            Latch.API_PORT = 80
             Latch.API_HTTPS = False
         elif host.startswith("https://"):
             Latch.API_HOST = host[len("https://"):]
+            Latch.API_PORT = 443
             Latch.API_HTTPS = True
+
+    @staticmethod
+    def set_proxy(proxy, port):
+        '''
+        Enable using a Proxy to connect through
+        @param $proxy The proxy server
+        @param $port The proxy port number
+        '''
+        Latch.API_PROXY = proxy
+        Latch.API_PROXY_PORT = port
 
     @staticmethod
     def get_part_from_header(part, header):
@@ -208,10 +224,19 @@ class Latch(object):
         import http.client
         authHeaders = self.authentication_headers("GET", url, xHeaders)
         #print(headers)
-        if Latch.API_HTTPS:
-            conn = http.client.HTTPSConnection(Latch.API_HOST)
-        else: 
-            conn = http.client.HTTPConnection(Latch.API_HOST)
+        if Latch.API_PROXY != None:
+            if Latch.API_HTTPS:
+                conn = http.client.HTTPSConnection(Latch.API_PROXY, Latch.API_PROXY_PORT)
+                conn.set_tunnel(Latch.API_HOST, Latch.API_PORT) 
+            else: 
+                conn = http.client.HTTPConnection(Latch.API_PROXY, Latch.API_PROXY_PORT)
+                url = "http://" + Latch.API_HOST + url                  
+        else:
+            if Latch.API_HTTPS:
+                conn = http.client.HTTPSConnection(Latch.API_HOST, Latch.API_PORT)
+            else: 
+                conn = http.client.HTTPConnection(Latch.API_HOST, Latch.API_PORT)
+
         conn.request("GET", url, headers=authHeaders)
         response = conn.getresponse()
         
