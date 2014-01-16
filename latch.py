@@ -237,13 +237,18 @@ class Latch(object):
             else: 
                 conn = http.client.HTTPConnection(Latch.API_HOST, Latch.API_PORT)
 
-        conn.request("GET", url, headers=authHeaders)
-        response = conn.getresponse()
-        
-        responseData = response.read().decode('utf8')
-        #print("response:" + responseData)
-        conn.close();
-        return LatchResponse(responseData)
+        try:
+            conn.request("GET", url, headers=authHeaders)
+            response = conn.getresponse()
+           
+            responseData = response.read().decode('utf8')
+            #print("response:" + responseData)
+            conn.close();
+            ret = LatchResponse(responseData)
+        except:
+            ret = LatchResponse("{}")
+
+        return ret
         
 
     def pairWithId(self, accountId):
