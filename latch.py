@@ -122,7 +122,6 @@ class Latch(object):
     API_HTTPS = True
     API_PROXY = None;
     API_PROXY_PORT = None;
-    API_PROXY_HTTPS = True;
     API_CHECK_STATUS_URL = "/api/0.6/status";
     API_PAIR_URL = "/api/0.6/pair";
     API_PAIR_WITH_ID_URL = "/api/0.6/pairWithId";
@@ -156,20 +155,11 @@ class Latch(object):
     @staticmethod
     def set_proxy(proxy, port):
         '''
-        Enable using a Proxy to connect through (http://proxy) or (https://proxy) or (proxy - https by default)
+        Enable using a Proxy to connect through
         @param $proxy The proxy server
         @param $port The proxy port number
         '''
-        if proxy.startswith("http://"):
-            Latch.API_PROXY = proxy[len("http://"):]
-            Latch.API_PROXY_HTTPS = False
-        elif proxy.startswith("https://"):
-            Latch.API_PROXY = proxy[len("https://"):]
-            Latch.API_PROXY_HTTPS = True
-        else:
-            Latch.API_PROXY = proxy
-            Latch.API_PROXY_HTTPS = True
-
+        Latch.API_PROXY = proxy
         Latch.API_PROXY_PORT = port
 
     @staticmethod
@@ -235,11 +225,12 @@ class Latch(object):
         authHeaders = self.authentication_headers("GET", url, xHeaders)
         #print(headers)
         if Latch.API_PROXY != None:
-            if Latch.API_PROXY_HTTPS:
+            if Latch.API_HTTPS:
                 conn = http.client.HTTPSConnection(Latch.API_PROXY, Latch.API_PROXY_PORT)
+                conn.set_tunnel(Latch.API_HOST, Latch.API_PORT) 
             else: 
                 conn = http.client.HTTPConnection(Latch.API_PROXY, Latch.API_PROXY_PORT)
-            conn.set_tunnel(Latch.API_HOST, Latch.API_PORT)
+                url = "http://" + Latch.API_HOST + url                  
         else:
             if Latch.API_HTTPS:
                 conn = http.client.HTTPSConnection(Latch.API_HOST, Latch.API_PORT)
@@ -247,7 +238,7 @@ class Latch(object):
                 conn = http.client.HTTPConnection(Latch.API_HOST, Latch.API_PORT)
 
         conn.request("GET", url, headers=authHeaders)
-        response = conn.getresponse()
+        response = conn.getresponse() #try
         
         responseData = response.read().decode('utf8')
         #print("response:" + responseData)
