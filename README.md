@@ -24,7 +24,6 @@
 
 * Optional settings:
 ```
-	latch.Latch.set_host("LATCH_HOST_HERE")
 	latch.Latch.set_proxy("PROXY_HOST_HERE", port)
 ```
 
