@@ -221,21 +221,27 @@ class Latch(object):
         @param $string $xHeaders
         @return LatchResponse
         '''
-        import http.client
+        try:
+            # Try to use the new Python3 HTTP library if available
+            import http.client as http
+        except:
+            # Must be using Python2 so use the appropriate library
+            import httplib as http
+
         authHeaders = self.authentication_headers("GET", url, xHeaders)
         #print(headers)
         if Latch.API_PROXY != None:
             if Latch.API_HTTPS:
-                conn = http.client.HTTPSConnection(Latch.API_PROXY, Latch.API_PROXY_PORT)
+                conn = http.HTTPSConnection(Latch.API_PROXY, Latch.API_PROXY_PORT)
                 conn.set_tunnel(Latch.API_HOST, Latch.API_PORT) 
             else: 
-                conn = http.client.HTTPConnection(Latch.API_PROXY, Latch.API_PROXY_PORT)
+                conn = http.HTTPConnection(Latch.API_PROXY, Latch.API_PROXY_PORT)
                 url = "http://" + Latch.API_HOST + url                  
         else:
             if Latch.API_HTTPS:
-                conn = http.client.HTTPSConnection(Latch.API_HOST, Latch.API_PORT)
+                conn = http.HTTPSConnection(Latch.API_HOST, Latch.API_PORT)
             else: 
-                conn = http.client.HTTPConnection(Latch.API_HOST, Latch.API_PORT)
+                conn = http.HTTPConnection(Latch.API_HOST, Latch.API_PORT)
 
         try:
             conn.request("GET", url, headers=authHeaders)
