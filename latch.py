@@ -113,34 +113,34 @@ class LatchResponse(object):
         if hasattr(self, "error"):
             json_response["error"] = self.error
 
-        return json_response;
+        return json_response
 
 
 class Latch(object):
 
-    API_HOST = "latch.elevenpaths.com";
-    API_PORT = 443;
+    API_HOST = "latch.elevenpaths.com"
+    API_PORT = 443
     API_HTTPS = True
-    API_PROXY = None;
-    API_PROXY_PORT = None;
-    API_CHECK_STATUS_URL = "/api/0.9/status";
-    API_PAIR_URL = "/api/0.9/pair";
-    API_PAIR_WITH_ID_URL = "/api/0.9/pairWithId";
-    API_UNPAIR_URL = "/api/0.9/unpair";
-    API_LOCK_URL = "/api/0.9/lock";
-    API_UNLOCK_URL = "/api/0.9/unlock";
-    API_HISTORY_URL = "/api/0.9/history";
-    API_OPERATION_URL = "/api/0.9/operation";
+    API_PROXY = None
+    API_PROXY_PORT = None
+    API_CHECK_STATUS_URL = "/api/0.9/status"
+    API_PAIR_URL = "/api/0.9/pair"
+    API_PAIR_WITH_ID_URL = "/api/0.9/pairWithId"
+    API_UNPAIR_URL = "/api/0.9/unpair"
+    API_LOCK_URL = "/api/0.9/lock"
+    API_UNLOCK_URL = "/api/0.9/unlock"
+    API_HISTORY_URL = "/api/0.9/history"
+    API_OPERATION_URL = "/api/0.9/operation"
 
-    AUTHORIZATION_HEADER_NAME = "Authorization";
-    DATE_HEADER_NAME = "X-11Paths-Date";
-    AUTHORIZATION_METHOD = "11PATHS";
-    AUTHORIZATION_HEADER_FIELD_SEPARATOR = " ";
+    AUTHORIZATION_HEADER_NAME = "Authorization"
+    DATE_HEADER_NAME = "X-11Paths-Date"
+    AUTHORIZATION_METHOD = "11PATHS"
+    AUTHORIZATION_HEADER_FIELD_SEPARATOR = " "
 
-    UTC_STRING_FORMAT = "%Y-%m-%d %H:%M:%S";
+    UTC_STRING_FORMAT = "%Y-%m-%d %H:%M:%S"
 
-    X_11PATHS_HEADER_PREFIX = "X-11paths-";
-    X_11PATHS_HEADER_SEPARATOR = ":";
+    X_11PATHS_HEADER_PREFIX = "X-11paths-"
+    X_11PATHS_HEADER_SEPARATOR = ":"
 
     @staticmethod
     def set_host(host):
@@ -176,7 +176,7 @@ class Latch(object):
         @return string the specified part from the header or an empty string if not existent
         '''
         if (header):
-            parts = header.split(Latch.AUTHORIZATION_HEADER_FIELD_SEPARATOR);
+            parts = header.split(Latch.AUTHORIZATION_HEADER_FIELD_SEPARATOR)
             if(len(parts) >= part):
                 return parts[part]
         return ""
@@ -260,10 +260,10 @@ class Latch(object):
             response = conn.getresponse()
 
             responseData = response.read().decode('utf8')
-            conn.close();
+            conn.close()
             ret = LatchResponse(responseData)
         except:
-            ret = LatchResponse("{}")
+            ret = None
 
         return ret
 
@@ -363,8 +363,8 @@ class Latch(object):
                                self.sign_data(stringToSign))
 
         headers = dict()
-        headers[Latch.AUTHORIZATION_HEADER_NAME] = authorizationHeader;
-        headers[Latch.DATE_HEADER_NAME] = utc;
+        headers[Latch.AUTHORIZATION_HEADER_NAME] = authorizationHeader
+        headers[Latch.DATE_HEADER_NAME] = utc
         return headers
 
 
