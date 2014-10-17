@@ -263,7 +263,7 @@ class Latch(object):
             conn.close();
             ret = LatchResponse(responseData)
         except:
-            ret = LatchResponse("{}")
+            ret = None
 
         return ret
 
