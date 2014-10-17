@@ -314,7 +314,7 @@ class Latch(object):
     def deleteOperation(self, operationId):
         return self._http("DELETE", self.API_OPERATION_URL + "/" + operationId)
 
-    def getOperations(self, operationId):
+    def getOperations(self, operationId=None):
         if (operationId == None):
             return self._http("GET", self.API_OPERATION_URL)
         else:
