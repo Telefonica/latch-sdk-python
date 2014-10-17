@@ -249,10 +249,13 @@ class Latch(object):
                 conn = http.HTTPConnection(Latch.API_HOST, Latch.API_PORT)
 
         try:
+            allHeaders = authHeaders
+            if (method == "POST" || method == "PUT"):
+                allHeaders["Content-type"] = "application/x-www-form-urlencoded"
             if params is not None:
                 parameters = urllib.urlencode(params)
-                allHeaders = authHeaders
-                allHeaders["Content-type"] = "application/x-www-form-urlencoded"
+                
+                
                 conn.request(method, url, parameters, headers=allHeaders)
             else:
                 conn.request(method, url, headers=authHeaders)
@@ -285,15 +288,15 @@ class Latch(object):
 
     def lock(self, accountId, operationId=None):
         if (operationId == None):
-            return self._http("POST", self.API_UNLOCK_URL + "/" + accountId, None, dict())
+            return self._http("POST", self.API_UNLOCK_URL + "/" + accountId)
         else:
-            return self._http("POST", self.API_LOCK_URL + "/" + accountId + "/op/" + operationId, None, dict())
+            return self._http("POST", self.API_LOCK_URL + "/" + accountId + "/op/" + operationId)
 
     def unlock(self, accountId, operationId=None):
         if (operationId == None):
-            return self._http("POST", self.API_UNLOCK_URL + "/" + accountId, None, dict())
+            return self._http("POST", self.API_UNLOCK_URL + "/" + accountId)
         else:
-            return self._http("POST", self.API_UNLOCK_URL + "/" + accountId + "/op/" + operationId, None, dict())
+            return self._http("POST", self.API_UNLOCK_URL + "/" + accountId + "/op/" + operationId)
 
     def history(self, accountId, fromT=0, toT=None):
         if (toT is None):
