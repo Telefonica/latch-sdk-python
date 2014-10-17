@@ -250,7 +250,7 @@ class Latch(object):
 
         try:
             allHeaders = authHeaders
-            if (method == "POST" || method == "PUT"):
+            if (method == "POST" or method == "PUT"):
                 allHeaders["Content-type"] = "application/x-www-form-urlencoded"
             if params is not None:
                 parameters = urllib.urlencode(params)
