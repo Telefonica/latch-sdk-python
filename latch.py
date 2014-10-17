@@ -285,15 +285,15 @@ class Latch(object):
 
     def lock(self, accountId, operationId=None):
         if (operationId == None):
-            return self._http("GET", self.API_UNLOCK_URL + "/" + accountId)
+            return self._http("POST", self.API_UNLOCK_URL + "/" + accountId)
         else:
-            return self._http("GET", self.API_LOCK_URL + "/" + accountId + "/op/" + operationId)
+            return self._http("POST", self.API_LOCK_URL + "/" + accountId + "/op/" + operationId)
 
     def unlock(self, accountId, operationId=None):
         if (operationId == None):
-            return self._http("GET", self.API_UNLOCK_URL + "/" + accountId)
+            return self._http("POST", self.API_UNLOCK_URL + "/" + accountId)
         else:
-            return self._http("GET", self.API_UNLOCK_URL + "/" + accountId + "/op/" + operationId)
+            return self._http("POST", self.API_UNLOCK_URL + "/" + accountId + "/op/" + operationId)
 
     def history(self, accountId, fromT=0, toT=None):
         if (toT is None):
