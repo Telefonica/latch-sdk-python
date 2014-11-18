@@ -288,7 +288,7 @@ class Latch(object):
 
     def lock(self, accountId, operationId=None):
         if (operationId == None):
-            return self._http("POST", self.API_UNLOCK_URL + "/" + accountId)
+            return self._http("POST", self.API_LOCK_URL + "/" + accountId)
         else:
             return self._http("POST", self.API_LOCK_URL + "/" + accountId + "/op/" + operationId)
 
