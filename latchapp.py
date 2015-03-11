@@ -37,11 +37,21 @@ class LatchApp(LatchAuth):
     def pair(self, token):
         return self._http("GET", self.API_PAIR_URL + "/" + token)
 
-    def status(self, account_id):
-        return self._http("GET", self.API_CHECK_STATUS_URL + "/" + account_id)
+    def status(self, account_id, silent=False, nootp=False):
+        url = self.API_CHECK_STATUS_URL + "/" + account_id
+        if nootp:
+            url += '/nootp'
+        if silent:
+            url += '/silent'
+        return self._http("GET", url)
 
-    def operationStatus(self, account_id, operation_id):
-        return self._http("GET", self.API_CHECK_STATUS_URL + "/" + account_id + "/op/" + operation_id)
+    def operationStatus(self, account_id, operation_id, silent=False, nootp=False):
+        url = self.API_CHECK_STATUS_URL + "/" + account_id + "/op/" + operation_id
+        if nootp:
+            url += '/nootp'
+        if silent:
+            url += '/silent'
+        return self._http("GET", url)
 
     def unpair(self, account_id):
         return self._http("GET", self.API_UNPAIR_URL + "/" + account_id)
