@@ -20,11 +20,13 @@
 from latchresponse import LatchResponse
 import logging
 import time
+import sys
 
 
 class LatchAuth(object):
-    API_VERSION = "1.0"
-    API_HOST = "latch.elevenpaths.com"
+    API_VERSION = "1.1"
+    # API_HOST = "latch.elevenpaths.com"
+    API_HOST = "testpath2.11paths.com"
     API_PORT = 443
     API_HTTPS = True
     API_PROXY = None
@@ -37,6 +39,7 @@ class LatchAuth(object):
     API_UNLOCK_URL = "/api/" + API_VERSION + "/unlock"
     API_HISTORY_URL = "/api/" + API_VERSION + "/history"
     API_OPERATION_URL = "/api/" + API_VERSION + "/operation"
+    API_INSTANCE_URL = "/api/" + API_VERSION + "/instance"
     API_SUBSCRIPTION_URL = "/api/" + API_VERSION + "/subscription"
     API_APPLICATION_URL = "/api/" + API_VERSION + "/application"
 
@@ -146,7 +149,7 @@ class LatchAuth(object):
             import urllib
 
         auth_headers = self.authentication_headers(method, url, x_headers, None, params)
-        if LatchAuth.API_PROXY != None:
+        if LatchAuth.API_PROXY is not None:
             if LatchAuth.API_HTTPS:
                 conn = http.HTTPSConnection(LatchAuth.API_PROXY, LatchAuth.API_PROXY_PORT)
                 conn.set_tunnel(LatchAuth.API_HOST, LatchAuth.API_PORT)
@@ -217,10 +220,11 @@ class LatchAuth(object):
 
         if params is not None:
             string_to_sign = string_to_sign + "\n" + self.get_serialized_params(params)
-
         authorization_header = (LatchAuth.AUTHORIZATION_METHOD + LatchAuth.AUTHORIZATION_HEADER_FIELD_SEPARATOR +
                                 self.appId + LatchAuth.AUTHORIZATION_HEADER_FIELD_SEPARATOR +
                                 self.sign_data(string_to_sign))
+        # print authorization_header
+        # sys.exit()
 
         headers = dict()
         headers[LatchAuth.AUTHORIZATION_HEADER_NAME] = authorization_header
@@ -247,7 +251,7 @@ class LatchAuth(object):
         else:
             return ""
 
-    def get_serialized_params(self, params):
+    def get_serialized_params(self, params, arr_name=None, count=1):
         try:
             # Try to use the new Python3 HTTP library if available
             import http.client as http
@@ -256,10 +260,20 @@ class LatchAuth(object):
             # Must be using Python2 so use the appropriate library
             import httplib as http
             import urllib
-        if params:
+        result = ""
+        if params is not None and params is not "":
             serialized_params = ""
-            for key in sorted(params):
-                serialized_params += key + "=" + urllib.quote_plus(params[key]) + "&"
-            return serialized_params.strip("&")
-        else:
-            return ""
+            for key in params:
+                if isinstance(params, dict):
+                    if count < 2:
+                        serialized_params += self.get_serialized_params(params[key], key, ++count)
+                    else:
+                        print "Passed array can't by more than 2 depths"
+                        sys.exit()
+                else:
+                    if arr_name is not None and arr_name != "":
+                        serialized_params += arr_name + "=" + key + "&"
+                    else:
+                        serialized_params += key + "=" + key + "&"
+            result = serialized_params.rstrip("&")
+        return result

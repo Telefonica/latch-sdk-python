@@ -17,6 +17,8 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 '''
 import time
+import sys
+from pprint import pprint
 
 from latchauth import LatchAuth
 
@@ -37,13 +39,43 @@ class LatchApp(LatchAuth):
     def pair(self, token):
         return self._http("GET", self.API_PAIR_URL + "/" + token)
 
-    def status(self, account_id, silent=False, nootp=False):
+    def status(self, account_id, operation_id=None, instance=None, silent=False, nootp=False):
         url = self.API_CHECK_STATUS_URL + "/" + account_id
+        if operation_id is not None and operation_id is not "":
+            url += '/op/' + operation_id
+        if instance is not None and instance is not "":
+            url += '/i/' + instance
         if nootp:
             url += '/nootp'
         if silent:
             url += '/silent'
         return self._http("GET", url)
+
+    def addInstance(self, account_id, operation_id=None, instance=None):
+        arr = dict([])
+        inst = 'instances'
+        url = self.API_INSTANCE_URL + "/" + account_id
+        if operation_id is not None and operation_id is not "":
+            url += '/op/' + operation_id
+        if instance is not None and instance is not "":
+            if isinstance(instance, list) is True:
+                arr[inst] = []
+                for i in instance:
+                    arr[inst].append(i)
+            else:
+                arr[inst] = instance
+        print url
+        print dict(arr)
+        # sys.exit()
+        return self._http("POST", url, None, arr)  #None param?
+
+    def removeInstance(self, account_id, operation_id=None, instance=None):
+        url = self.API_INSTANCE_URL + "/" + account_id
+        if operation_id is not None and operation_id is not "":
+            url += "/op/" + operation_id
+        if instance is not None and instance is not "":
+            url += "/i/" + instance
+        return self._http("DELETE", url)
 
     def operationStatus(self, account_id, operation_id, silent=False, nootp=False):
         url = self.API_CHECK_STATUS_URL + "/" + account_id + "/op/" + operation_id
@@ -56,17 +88,17 @@ class LatchApp(LatchAuth):
     def unpair(self, account_id):
         return self._http("GET", self.API_UNPAIR_URL + "/" + account_id)
 
-    def lock(self, account_id, operation_id=None):
-        if operation_id == None:
-            return self._http("POST", self.API_LOCK_URL + "/" + account_id)
-        else:
-            return self._http("POST", self.API_LOCK_URL + "/" + account_id + "/op/" + operation_id)
+    def lock(self, account_id, operation_id=None, instance=None):
+        url = self.API_LOCK_URL + "/" + account_id
+        url += "/op/" + operation_id if operation_id is not None and operation_id != "" else ""
+        url += "/i/" + instance if instance is not None and instance != "" else ""
+        return self._http("POST", url)
 
-    def unlock(self, account_id, operation_id=None):
-        if operation_id == None:
-            return self._http("POST", self.API_UNLOCK_URL + "/" + account_id)
-        else:
-            return self._http("POST", self.API_UNLOCK_URL + "/" + account_id + "/op/" + operation_id)
+    def unlock(self, account_id, operation_id=None, instance=None):
+        url = self.API_UNLOCK_URL + "/" + account_id
+        url += "/op/" + operation_id if operation_id is not None and operation_id != "" else ""
+        url += "/i/" + instance if instance is not None and instance != "" else ""
+        return self._http("POST", url)
 
     def history(self, account_id, from_t=0, to_t=None):
         if to_t is None:
