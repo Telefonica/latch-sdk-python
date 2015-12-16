@@ -50,16 +50,15 @@ class LatchApp(LatchAuth):
         return self._http("GET", url)
 
     def addInstance(self, account_id, operation_id=None, instance=None):
-        arr = dict([])
+        arr = dict()
         inst = 'instances'
         url = self.API_INSTANCE_URL + "/" + account_id
         if operation_id is not None and operation_id is not "":
             url += '/op/' + operation_id
         if instance is not None and instance is not "":
-            if isinstance(instance, list) is True:
-                arr[inst] = []
+            if isinstance(instance, dict) is True:
                 for i in instance:
-                    arr[inst].append(i)
+                    arr[inst] = instance[i]
             else:
                 arr[inst] = instance
         return self._http("POST", url, None, arr)

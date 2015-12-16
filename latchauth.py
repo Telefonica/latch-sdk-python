@@ -20,15 +20,17 @@
 from latchresponse import LatchResponse
 import logging
 import time
-import sys
 
 
 class LatchAuth(object):
     API_VERSION = "1.1"
     # API_HOST = "latch.elevenpaths.com"
-    API_HOST = "testpath2.11paths.com"
-    API_PORT = 443
-    API_HTTPS = True
+    # API_HOST = "testpath2.11paths.com"
+    API_HOST = "172.16.10.213"
+    # API_PORT = 443
+    # API_PORT = 80
+    API_PORT = 9000
+    API_HTTPS = False
     API_PROXY = None
     API_PROXY_PORT = None
     API_CHECK_STATUS_URL = "/api/" + API_VERSION + "/status"
@@ -167,7 +169,7 @@ class LatchAuth(object):
             if method == "POST" or method == "PUT":
                 all_headers["Content-type"] = "application/x-www-form-urlencoded"
             if params is not None:
-                parameters = urllib.urlencode(params)
+                parameters = self.get_serialized_params(params)
 
                 conn.request(method, url, parameters, headers=all_headers)
             else:
@@ -261,14 +263,11 @@ class LatchAuth(object):
         serialized_params = ""
         if params is not None and params is not "":
             for key in params:
-                if isinstance(params[key], dict):
-                    for key2 in params[key]:
-                        if isinstance(params[key][key], dict) and isinstance(params[key][key], list):
-                            serialized_params += key + "=" + key2 + "&"
+                if isinstance(params[key], list) or isinstance(params[key], dict):
+                    for value in range(len(params[key])):
+                        serialized_params += key + "=" + params[key][value] + "&"
                 else:
-                    if arr_name is not None and arr_name != "":
-                        serialized_params += arr_name + "=" + key + "&"
-                    else:
-                        serialized_params += key + "=" + key + "&"
-            serialized_params.rstrip("&")
+                    serialized_params += key + "=" + params[key] + "&"
+            if len(serialized_params) > 0:
+                serialized_params = serialized_params[:-1]
         return serialized_params
