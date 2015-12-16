@@ -17,8 +17,6 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 '''
 import time
-import sys
-from pprint import pprint
 
 from latchauth import LatchAuth
 
@@ -64,10 +62,7 @@ class LatchApp(LatchAuth):
                     arr[inst].append(i)
             else:
                 arr[inst] = instance
-        print url
-        print dict(arr)
-        # sys.exit()
-        return self._http("POST", url, None, arr)  #None param?
+        return self._http("POST", url, None, arr)
 
     def removeInstance(self, account_id, operation_id=None, instance=None):
         url = self.API_INSTANCE_URL + "/" + account_id
@@ -90,14 +85,18 @@ class LatchApp(LatchAuth):
 
     def lock(self, account_id, operation_id=None, instance=None):
         url = self.API_LOCK_URL + "/" + account_id
-        url += "/op/" + operation_id if operation_id is not None and operation_id != "" else ""
-        url += "/i/" + instance if instance is not None and instance != "" else ""
+        if operation_id is not None and operation_id != "":
+            url += "/op/" + operation_id
+        if instance is not None and instance != "":
+            url += "/i/" + instance
         return self._http("POST", url)
 
     def unlock(self, account_id, operation_id=None, instance=None):
         url = self.API_UNLOCK_URL + "/" + account_id
-        url += "/op/" + operation_id if operation_id is not None and operation_id != "" else ""
-        url += "/i/" + instance if instance is not None and instance != "" else ""
+        if operation_id is not None and operation_id != "":
+            url += "/op/" + operation_id
+        if instance is not None and instance != "":
+            url += "/i/" + instance
         return self._http("POST", url)
 
     def history(self, account_id, from_t=0, to_t=None):

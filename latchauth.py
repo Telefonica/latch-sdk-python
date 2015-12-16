@@ -223,8 +223,6 @@ class LatchAuth(object):
         authorization_header = (LatchAuth.AUTHORIZATION_METHOD + LatchAuth.AUTHORIZATION_HEADER_FIELD_SEPARATOR +
                                 self.appId + LatchAuth.AUTHORIZATION_HEADER_FIELD_SEPARATOR +
                                 self.sign_data(string_to_sign))
-        # print authorization_header
-        # sys.exit()
 
         headers = dict()
         headers[LatchAuth.AUTHORIZATION_HEADER_NAME] = authorization_header
@@ -260,20 +258,17 @@ class LatchAuth(object):
             # Must be using Python2 so use the appropriate library
             import httplib as http
             import urllib
-        result = ""
+        serialized_params = ""
         if params is not None and params is not "":
-            serialized_params = ""
             for key in params:
-                if isinstance(params, dict):
-                    if count < 2:
-                        serialized_params += self.get_serialized_params(params[key], key, ++count)
-                    else:
-                        print "Passed array can't by more than 2 depths"
-                        sys.exit()
+                if isinstance(params[key], dict):
+                    for key2 in params[key]:
+                        if isinstance(params[key][key], dict) and isinstance(params[key][key], list):
+                            serialized_params += key + "=" + key2 + "&"
                 else:
                     if arr_name is not None and arr_name != "":
                         serialized_params += arr_name + "=" + key + "&"
                     else:
                         serialized_params += key + "=" + key + "&"
-            result = serialized_params.rstrip("&")
-        return result
+            serialized_params.rstrip("&")
+        return serialized_params
