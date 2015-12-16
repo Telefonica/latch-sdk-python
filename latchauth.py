@@ -24,13 +24,10 @@ import time
 
 class LatchAuth(object):
     API_VERSION = "1.1"
-    # API_HOST = "latch.elevenpaths.com"
-    # API_HOST = "testpath2.11paths.com"
+    API_HOST = "latch.elevenpaths.com"
     API_HOST = "172.16.10.213"
-    # API_PORT = 443
-    # API_PORT = 80
-    API_PORT = 9000
-    API_HTTPS = False
+    API_PORT = 443
+    API_HTTPS = True
     API_PROXY = None
     API_PROXY_PORT = None
     API_CHECK_STATUS_URL = "/api/" + API_VERSION + "/status"
