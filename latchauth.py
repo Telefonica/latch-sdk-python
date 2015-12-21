@@ -25,7 +25,6 @@ import time
 class LatchAuth(object):
     API_VERSION = "1.1"
     API_HOST = "latch.elevenpaths.com"
-    API_HOST = "172.16.10.213"
     API_PORT = 443
     API_HTTPS = True
     API_PROXY = None
@@ -236,7 +235,7 @@ class LatchAuth(object):
         '''
         if x_headers:
             headers = dict((k.lower(), v) for k, v in x_headers.iteritems())
-            headers.sort()
+            sorted(headers)
             serialized_headers = ""
             for key, value in headers:
                 if not key.startsWith(LatchAuth.X_11PATHS_HEADER_PREFIX.lower()):
@@ -248,7 +247,7 @@ class LatchAuth(object):
         else:
             return ""
 
-    def get_serialized_params(self, params, arr_name=None, count=1):
+    def get_serialized_params(self, params):
         try:
             # Try to use the new Python3 HTTP library if available
             import http.client as http
@@ -262,7 +261,8 @@ class LatchAuth(object):
             for key in params:
                 if isinstance(params[key], list) or isinstance(params[key], dict):
                     for value in range(len(params[key])):
-                        serialized_params += key + "=" + params[key][value] + "&"
+                        if isinstance(params[key][value], basestring):
+                            serialized_params += key + "=" + params[key][value] + "&"
                 else:
                     serialized_params += key + "=" + params[key] + "&"
             if len(serialized_params) > 0:
