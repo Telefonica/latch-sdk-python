@@ -61,7 +61,7 @@ class LatchApp(LatchAuth):
                     arr[inst] = instance[i]
             else:
                 arr[inst] = instance
-        return self._http("POST", url, None, arr)
+        return self._http("PUT", url, None, arr)
 
     def removeInstance(self, account_id, operation_id=None, instance=None):
         url = self.API_INSTANCE_URL + "/" + account_id
