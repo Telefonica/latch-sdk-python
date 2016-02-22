@@ -23,7 +23,7 @@ import time
 
 
 class LatchAuth(object):
-    API_VERSION = "1.0"
+    API_VERSION = "1.1"
     API_HOST = "latch.elevenpaths.com"
     API_PORT = 443
     API_HTTPS = True
@@ -37,6 +37,7 @@ class LatchAuth(object):
     API_UNLOCK_URL = "/api/" + API_VERSION + "/unlock"
     API_HISTORY_URL = "/api/" + API_VERSION + "/history"
     API_OPERATION_URL = "/api/" + API_VERSION + "/operation"
+    API_INSTANCE_URL = "/api/" + API_VERSION + "/instance"
     API_SUBSCRIPTION_URL = "/api/" + API_VERSION + "/subscription"
     API_APPLICATION_URL = "/api/" + API_VERSION + "/application"
 
@@ -146,7 +147,7 @@ class LatchAuth(object):
             import urllib
 
         auth_headers = self.authentication_headers(method, url, x_headers, None, params)
-        if LatchAuth.API_PROXY != None:
+        if LatchAuth.API_PROXY is not None:
             if LatchAuth.API_HTTPS:
                 conn = http.HTTPSConnection(LatchAuth.API_PROXY, LatchAuth.API_PROXY_PORT)
                 conn.set_tunnel(LatchAuth.API_HOST, LatchAuth.API_PORT)
@@ -164,7 +165,7 @@ class LatchAuth(object):
             if method == "POST" or method == "PUT":
                 all_headers["Content-type"] = "application/x-www-form-urlencoded"
             if params is not None:
-                parameters = urllib.urlencode(params)
+                parameters = self.get_serialized_params(params)
 
                 conn.request(method, url, parameters, headers=all_headers)
             else:
@@ -217,7 +218,6 @@ class LatchAuth(object):
 
         if params is not None:
             string_to_sign = string_to_sign + "\n" + self.get_serialized_params(params)
-
         authorization_header = (LatchAuth.AUTHORIZATION_METHOD + LatchAuth.AUTHORIZATION_HEADER_FIELD_SEPARATOR +
                                 self.appId + LatchAuth.AUTHORIZATION_HEADER_FIELD_SEPARATOR +
                                 self.sign_data(string_to_sign))
@@ -235,7 +235,7 @@ class LatchAuth(object):
         '''
         if x_headers:
             headers = dict((k.lower(), v) for k, v in x_headers.iteritems())
-            headers.sort()
+            sorted(headers)
             serialized_headers = ""
             for key, value in headers:
                 if not key.startsWith(LatchAuth.X_11PATHS_HEADER_PREFIX.lower()):
@@ -256,10 +256,15 @@ class LatchAuth(object):
             # Must be using Python2 so use the appropriate library
             import httplib as http
             import urllib
-        if params:
-            serialized_params = ""
-            for key in sorted(params):
-                serialized_params += key + "=" + urllib.quote_plus(params[key]) + "&"
-            return serialized_params.strip("&")
-        else:
-            return ""
+        serialized_params = ""
+        if params is not None and params is not "":
+            for key in params:
+                if isinstance(params[key], list) or isinstance(params[key], dict):
+                    for value in range(len(params[key])):
+                        if isinstance(params[key][value], basestring):
+                            serialized_params += key + "=" + params[key][value] + "&"
+                else:
+                    serialized_params += key + "=" + params[key] + "&"
+            if len(serialized_params) > 0:
+                serialized_params = serialized_params[:-1]
+        return serialized_params
