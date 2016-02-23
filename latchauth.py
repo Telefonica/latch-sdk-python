@@ -261,9 +261,10 @@ class LatchAuth(object):
             params = OrderedDict(sorted(params.items()))
             for key in params:
                 if type(params[key]) is list or type(params[key]) is dict:
-                    for value2 in range(len(params[key])):
-                        if isinstance(params[key][value2], basestring):
-                            serialized_params += key + "=" + params[key][value2] + "&"
+                    params_collection = sorted(params[key])
+                    for value2 in range(len(params_collection)):
+                        if isinstance(params_collection[value2], basestring) or isinstance(params_collection[value2], int):
+                            serialized_params += key + "=" + str(params_collection[value2]) + "&"
                 else:
                     serialized_params += key + "=" + params[key] + "&"
             if len(serialized_params) > 0:
