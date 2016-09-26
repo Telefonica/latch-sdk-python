@@ -89,3 +89,42 @@ class LatchApp(LatchAuth):
             return self._http("GET", self.API_OPERATION_URL)
         else:
             return self._http("GET", self.API_OPERATION_URL + "/" + operation_id)
+
+    def getInstances(self, account_id, operation_id=None):
+        if operation_id == None:
+            return self._http("GET", self.API_INSTANCE_URL + "/" + account_id)
+        else:
+            return self._http("GET", self.API_INSTANCE_URL + "/" + account_id + "/op/" + operation_id)
+
+    def instanceStatus(self, instance_id, account_id, operation_id=None, silent=False, nootp=False):
+        if operation_id == None:
+            url = self.API_CHECK_STATUS_URL + "/" + account_id + "/i/" + instance_id
+        else:
+            url = self.API_CHECK_STATUS_URL + "/" + account_id + "/op/" + operation_id + "/i/" + instance_id
+        if nootp:
+            url += '/nootp'
+        if silent:
+            url += '/silent'
+        return self._http("GET", url)
+
+    def createInstance(self, name, account_id, operation_id=None):
+        # Only one at a time
+        params = {'instances': name}
+        if operation_id == None:
+            return self._http("PUT", self.API_INSTANCE_URL + '/' + account_id, None, params)
+        else:
+            return self._http("PUT", self.API_INSTANCE_URL + '/' + account_id + '/op/' + operation_id, None, params)
+
+    def updateInstance(self, instance_id, account_id, operation_id, name, two_factor, lock_on_request):
+        params = {'name': name, 'two_factor': two_factor, 'lock_on_request': lock_on_request}
+
+        if operation_id == None:
+            return self._http("POST", self.API_INSTANCE_URL + "/" + account_id + '/i/' + instance_id, None, params)
+        else:
+            return self._http("POST", self.API_OPERATION_URL + "/" + account_id + '/op/' + operation_id + '/i/' + instance_id, None, params)
+
+    def deleteInstance(self, instance_id, account_id, operation_id=None):
+        if operation_id == None:
+            return self._http("DELETE", self.API_INSTANCE_URL + "/" + account_id + '/i/' + instance_id)
+        else:
+            return self._http("DELETE", self.API_INSTANCE_URL + "/" + account_id + "/op/" + operation_id + "/i/" + instance_id)

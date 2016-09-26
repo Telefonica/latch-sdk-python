@@ -39,6 +39,7 @@ class LatchAuth(object):
     API_OPERATION_URL = "/api/" + API_VERSION + "/operation"
     API_SUBSCRIPTION_URL = "/api/" + API_VERSION + "/subscription"
     API_APPLICATION_URL = "/api/" + API_VERSION + "/application"
+    API_INSTANCE_URL = "/api/" + API_VERSION + "/instance"
 
     AUTHORIZATION_HEADER_NAME = "Authorization"
     DATE_HEADER_NAME = "X-11Paths-Date"
