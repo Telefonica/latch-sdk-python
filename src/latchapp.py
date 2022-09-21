@@ -1,4 +1,4 @@
-'''
+"""
  This library offers an API to use LatchAuth in a python environment.
  Copyright (C) 2013 Eleven Paths
 
@@ -15,23 +15,29 @@
  You should have received a copy of the GNU Lesser General Public
  License along with this library if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-'''
+"""
 import time
 
-from latchauth import LatchAuth
+from src.latchauth import LatchAuth
+from deprecated.sphinx import deprecated, versionchanged
 
 
 class LatchApp(LatchAuth):
 
     def __init__(self, app_id, secret_key):
-        '''
+        """
         Create an instance of the class with the Application ID and secret obtained from Eleven Paths
         @param $app_id
         @param $secret_key
-        '''
+        """
         super(LatchApp, self).__init__(app_id, secret_key)
 
+    @deprecated(reason="You should use another function pair_with_id")
     def pairWithId(self, account_id):
+        return self._http("GET", self.API_PAIR_WITH_ID_URL + "/" + account_id)
+
+    @versionchanged()
+    def pair_with_id(self, account_id):
         return self._http("GET", self.API_PAIR_WITH_ID_URL + "/" + account_id)
 
     def pair(self, token):
@@ -45,7 +51,17 @@ class LatchApp(LatchAuth):
             url += '/silent'
         return self._http("GET", url)
 
+    @deprecated(reason="You should use the function operation_status")
     def operationStatus(self, account_id, operation_id, silent=False, nootp=False):
+        url = self.API_CHECK_STATUS_URL + "/" + account_id + "/op/" + operation_id
+        if nootp:
+            url += '/nootp'
+        if silent:
+            url += '/silent'
+        return self._http("GET", url)
+
+    @versionchanged(version='2.0', reason="This function is modified")
+    def operation_status(self, account_id, operation_id, silent=False, nootp=False):
         url = self.API_CHECK_STATUS_URL + "/" + account_id + "/op/" + operation_id
         if nootp:
             url += '/nootp'
@@ -121,10 +137,13 @@ class LatchApp(LatchAuth):
         if operation_id == None:
             return self._http("POST", self.API_INSTANCE_URL + "/" + account_id + '/i/' + instance_id, None, params)
         else:
-            return self._http("POST", self.API_OPERATION_URL + "/" + account_id + '/op/' + operation_id + '/i/' + instance_id, None, params)
+            return self._http("POST",
+                              self.API_OPERATION_URL + "/" + account_id + '/op/' + operation_id + '/i/' + instance_id,
+                              None, params)
 
     def deleteInstance(self, instance_id, account_id, operation_id=None):
         if operation_id == None:
             return self._http("DELETE", self.API_INSTANCE_URL + "/" + account_id + '/i/' + instance_id)
         else:
-            return self._http("DELETE", self.API_INSTANCE_URL + "/" + account_id + "/op/" + operation_id + "/i/" + instance_id)
+            return self._http("DELETE",
+                              self.API_INSTANCE_URL + "/" + account_id + "/op/" + operation_id + "/i/" + instance_id)

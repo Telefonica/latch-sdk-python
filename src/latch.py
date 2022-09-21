@@ -17,16 +17,15 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 '''
 
-from latchapp import LatchApp
-from latchuser import LatchUser
+from src.latchapp import LatchApp
 
 
 class Latch(LatchApp):
 
     def __init__(self, app_id, secret_key):
-        '''
+        """
         Create an instance of the class with the Application ID and secret obtained from Eleven Paths
         @param $app_id
         @param $secret_key
-        '''
+        """
         super(Latch, self).__init__(app_id, secret_key)

@@ -1,4 +1,4 @@
-'''
+"""
  This library offers an API to use LatchAuth in a python environment.
  Copyright (C) 2013 Eleven Paths
 
@@ -15,16 +15,16 @@
  You should have received a copy of the GNU Lesser General Public
  License along with this library if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-'''
+"""
 
-from latchresponse import LatchResponse
+from src.latchresponse import LatchResponse
 import logging
 import time
 
 
 class LatchAuth(object):
     API_VERSION = "1.0"
-    API_HOST = "latch.elevenpaths.com"
+    API_HOST = "latch.telefonica.com"
     API_PORT = 443
     API_HTTPS = True
     API_PROXY = None
@@ -53,9 +53,9 @@ class LatchAuth(object):
 
     @staticmethod
     def set_host(host):
-        '''
+        """
         @param $host The host to be connected with (http://hostname) or (https://hostname)
-        '''
+        """
         if host.startswith("http://"):
             LatchAuth.API_HOST = host[len("http://"):]
             LatchAuth.API_PORT = 80
@@ -67,23 +67,23 @@ class LatchAuth(object):
 
     @staticmethod
     def set_proxy(proxy, port):
-        '''
+        """
         Enable using a Proxy to connect through
         @param $proxy The proxy server
         @param $port The proxy port number
-        '''
+        """
         LatchAuth.API_PROXY = proxy
         LatchAuth.API_PROXY_PORT = port
 
     @staticmethod
     def get_part_from_header(part, header):
-        '''
+        """
         The custom header consists of three parts, the method, the appId and the signature.
         This method returns the specified part if it exists.
         @param $part The zero indexed part to be returned
         @param $header The HTTP header value from which to extract the part
         @return string the specified part from the header or an empty string if not existent
-        '''
+        """
         if header:
             parts = header.split(LatchAuth.AUTHORIZATION_HEADER_FIELD_SEPARATOR)
             if len(parts) >= part:
@@ -92,51 +92,51 @@ class LatchAuth(object):
 
     @staticmethod
     def get_auth_method_from_header(authorization_header):
-        '''
+        """
         @param $authorization_header Authorization HTTP Header
         @return string the Authorization method. Typical values are "Basic", "Digest" or "11PATHS"
-        '''
+        """
         return LatchAuth.get_part_from_header(0, authorization_header)
 
     @staticmethod
     def get_appId_from_header(authorization_header):
-        '''
+        """
         @param $authorization_header Authorization HTTP Header
         @return string the requesting application Id. Identifies the application using the API
-        '''
+        """
         return LatchAuth.get_part_from_header(1, authorization_header)
 
     @staticmethod
     def get_signature_from_header(authorization_header):
-        '''
+        """
         @param $authorization_header Authorization HTTP Header
         @return string the signature of the current request. Verifies the identity of the application using the API
-        '''
+        """
         return LatchAuth.get_part_from_header(2, authorization_header)
 
     @staticmethod
     def get_current_UTC():
-        '''
+        """
         @return a string representation of the current time in UTC to be used in a Date HTTP Header
-        '''
+        """
         return time.strftime(LatchAuth.UTC_STRING_FORMAT, time.gmtime())
 
     def __init__(self, appId, secretKey):
-        '''
+        """
         Create an instance of the class with the Application ID and secret obtained from Eleven Paths
         @param $appId
         @param $secretKey
-        '''
+        """
         self.appId = appId
         self.secretKey = secretKey
 
     def _http(self, method, url, x_headers=None, params=None):
-        '''
+        """
         HTTP Request to the specified API endpoint
         @param $string $url
         @param $string $x_headers
         @return LatchResponse
-        '''
+        """
         try:
             # Try to use the new Python3 HTTP library if available
             import http.client as http
@@ -182,10 +182,10 @@ class LatchAuth(object):
         return ret
 
     def sign_data(self, data):
-        '''
+        """
         @param $data the string to sign
         @return string base64 encoding of the HMAC-SHA1 hash of the data parameter using {@code secretKey} as cipher key.
-        '''
+        """
         from hashlib import sha1
         import hmac
         import binascii
@@ -194,14 +194,14 @@ class LatchAuth(object):
         return binascii.b2a_base64(sha1_hash.digest())[:-1].decode('utf8')
 
     def authentication_headers(self, http_method, query_string, x_headers=None, utc=None, params=None):
-        '''
+        """
         Calculate the authentication headers to be sent with a request to the API
         @param $http_method the HTTP Method, currently only GET is supported
         @param $query_string the urlencoded string including the path (from the first forward slash) and the parameters
         @param $x_headers HTTP headers specific to the 11-paths API. null if not needed.
         @param $utc the Universal Coordinated Time for the Date HTTP header
         @return array a map with the Authorization and Date headers needed to sign a Latch API request
-        '''
+        """
         if not utc:
             utc = LatchAuth.get_current_UTC()
 
@@ -229,11 +229,11 @@ class LatchAuth(object):
         return headers
 
     def get_serialized_headers(self, x_headers):
-        '''
+        """
         Prepares and returns a string ready to be signed from the 11-paths specific HTTP headers received
         @param $x_headers a non neccesarily ordered map (array without duplicates) of the HTTP headers to be ordered.
         @return string The serialized headers, an empty string if no headers are passed, or None if there's a problem such as non 11paths specific headers
-        '''
+        """
         if x_headers:
             headers = dict((k.lower(), v) for k, v in x_headers.iteritems())
             headers.sort()
