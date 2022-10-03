@@ -1,0 +1,27 @@
+[project]
+name = "latch-sdk-telefonica"
+version = "2.0.2"
+authors = [
+  { name="Telefonica Latch", email="soporte.latch@telefonica.com" },
+]
+description = "latch sdk-pyhton"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License (GPL)",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "Deprecated==1.2.13",
+    "python-dotenv==0.21.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Telefonica/latch-sdk-python"
+"Bug Tracker" = "https://github.com/Telefonica/latch-sdk-python"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+
+build-backend = "setuptools.build_meta"

@@ -17,7 +17,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from src.latchresponse import LatchResponse
+from latchresponse import LatchResponse
 import logging
 import time
 
@@ -207,9 +207,9 @@ class LatchAuth(object):
 
         utc = utc.strip()
 
-        #logging.debug(http_method)
-        #logging.debug(query_string)
-        #logging.debug(utc)
+        # logging.debug(http_method)
+        # logging.debug(query_string)
+        # logging.debug(utc)
 
         string_to_sign = (http_method.upper().strip() + "\n" +
                           utc + "\n" +

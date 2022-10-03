@@ -1,1 +1,2 @@
 Deprecated
+python-dotenv
