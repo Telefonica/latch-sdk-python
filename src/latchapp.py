@@ -33,15 +33,27 @@ class LatchApp(LatchAuth):
         super(LatchApp, self).__init__(app_id, secret_key)
 
     @deprecated(version='2.0', reason="You should use another function pair_with_id")  # pragma: no cover
-    def pairWithId(self, account_id):
-        return self._http("GET", self.API_PAIR_WITH_ID_URL + "/" + account_id)
+    def pairWithId(self, account_id, web3Wallet=None, web3Signature=None):
+        if web3Wallet is None or web3Signature is None:
+            return self._http("GET", self.API_PAIR_WITH_ID_URL + "/" + account_id)
+        else:
+            params = {"wallet": web3Wallet, "signature": web3Signature}
+            return self._http("POST", self.API_PAIR_WITH_ID_URL + "/" + account_id, None, params)
 
     @versionchanged(version='2.0', reason="This function has been refactored")
-    def pair_with_id(self, account_id):
-        return self._http("GET", self.API_PAIR_WITH_ID_URL + "/" + account_id)
+    def pair_with_id(self, account_id, web3Wallet=None, web3Signature=None):
+        if web3Wallet is None or web3Signature is None:
+            return self._http("GET", self.API_PAIR_WITH_ID_URL + "/" + account_id)
+        else:
+            params = {"wallet": web3Wallet, "signature": web3Signature}
+            return self._http("POST", self.API_PAIR_WITH_ID_URL + "/" + account_id, None, params)
 
-    def pair(self, token):
-        return self._http("GET", self.API_PAIR_URL + "/" + token)
+    def pair(self, token, web3Wallet=None, web3Signature=None):
+        if web3Wallet is None or web3Signature is None:
+            return self._http("GET", self.API_PAIR_URL + "/" + token)
+        else:
+            params = {"wallet": web3Wallet, "signature": web3Signature}
+            return self._http("POST", self.API_PAIR_URL + "/" + token, None, params)
 
     def status(self, account_id, silent=False, nootp=False):
         url = self.API_CHECK_STATUS_URL + "/" + account_id
