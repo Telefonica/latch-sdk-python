@@ -45,3 +45,20 @@
 	responseData = response.get_data()
 	responseError = response.get_error()
   ```
+
+#### USING PYTHON SDK FOR WEB3 SERVICES ####
+
+For using the Python SDK within an Web3 service, you must complain with the following:
+
+* In the Latch website, having an developer account, with the Web3 permissions activated. You must see a new button for creating a Web3 new app.
+
+* Call to Latch Server for pairing as usual, but with the newly methods:
+```
+    response = api.pair("PAIRING_CODE_HERE", "WEB3WALLET", "WEB3SIGNATURE")
+```
+The two additional parameters are:
+- WEB3WALLET: The Ethereum-based address wallet for the user that wants to pair the service.
+- WEB3SIGNATURE: A proof-of-ownership signature of a constant, in order to verify that the user owns the private key of the wallet.
+
+
+You have an example of use in the file test_sdk_latch.py
