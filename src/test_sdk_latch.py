@@ -8,11 +8,11 @@ sys.path.append(parent)
 
 from src import error, latch, latchapp, latchauth, latchresponse, latchuser
 
-APP_ID = "FHgKpD6uXzfbybrELydF"
-SECRET_KEY = "GgfgBuEG7ffz8pRh2mJJCdiHkCYCCV4iZCt7Ltwe"
+APP_ID = "<APP_ID>"
+SECRET_KEY = "<SECRET_ID>"
 
-WEB3WALLET = "0xc02816e8a21473168f77bed743b1f9a3828305fe"
-WEB3SIGNATURE = "0x000000000000000000000000000000000000000000000000000000000"
+WEB3WALLET = "<WEB3WALLET>"
+WEB3SIGNATURE = "<WEB3SIGNATURE>"
 # ACCOUNT_ID = ""
 
 
