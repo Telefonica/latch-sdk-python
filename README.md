@@ -60,7 +60,7 @@ For using the Python SDK within an Web3 service, you must complain with the foll
 
 Once you have your developer Latch account created, you must logging in the website.
 
-[Steps to add  new web3 app in latch](doc/Latch_WEB3_Apps.pdf)
+[Steps to add  new web3 app in latch-website](doc/Latch_WEB3_Apps.pdf)
 
 The two additional parameters are:
 - WEB3WALLET: The Ethereum-based address wallet for the user that wants to pair the service.
