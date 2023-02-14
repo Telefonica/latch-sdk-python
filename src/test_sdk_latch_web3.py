@@ -21,11 +21,12 @@ ACCOUNT_ID = ""
 
 def example_pair():
     api = latch.Latch(APP_ID, SECRET_KEY)
-    pairing_code = input("Introduce el PAIRING CODE: ")
+    pairing_code = input("Enter the pairing code: ")
     response = api.pair(pairing_code, WEB3WALLET, WEB3SIGNATURE)
     if response.get_error() != "":
         logging.error(
-            f"Error in PAIR request with error_code: {response.get_error().get_code()} and message: {response.get_error().get_message()}")
+            f"Error in PAIR request with error_code: {response.get_error().get_code()}"
+            f" and message: {response.get_error().get_message()}")
     else:
         account_id = response.data.get("accountId")
         logging.info(f"AccountId: {account_id}")
@@ -44,7 +45,8 @@ def get_status(api, account_id):
     response = api.status(account_id)
     if response.get_error() != "":
         logging.error(
-            f"Error in get_status request with error_code: {response.get_error().get_code()} and message: {response.get_error().get_message()}")
+            f"Error in get_status request with error_code: {response.get_error().get_code()}"
+            f" and message: {response.get_error().get_message()}")
     else:
         logging.info(f"Status: {response.data}")
 
