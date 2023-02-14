@@ -78,4 +78,4 @@ The two additional parameters are:
 ```
 
 
-You have an example of use in the file test_sdk_latch.py
+You have an example of use in the file [example for web3 app](src/test_sdk_latch_web3.py)
