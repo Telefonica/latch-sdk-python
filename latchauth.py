@@ -24,7 +24,7 @@ import time
 
 class LatchAuth(object):
     API_VERSION = "1.0"
-    API_HOST = "latch.elevenpaths.com"
+    API_HOST = "latch.telefonica.com"
     API_PORT = 443
     API_HTTPS = True
     API_PROXY = None
