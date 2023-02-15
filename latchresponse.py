@@ -1,6 +1,6 @@
 '''
  This library offers an API to use Latch in a python environment.
- Copyright (C) 2013 Eleven Paths
+ Copyright (C) 2013 Telefonica Digital España S.L.
 
  This library is free software you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public

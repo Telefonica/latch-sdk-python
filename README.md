@@ -5,7 +5,7 @@
 
 * Python.
 
-* Read API documentation (https://latch.elevenpaths.com/www/developers/doc_api).
+* Read API documentation (https://latch.telefonica.com/www/developers/doc_api).
 
 * To get the "Application ID" and "Secret", (fundamental values for integrating Latch in any application), it’s necessary to register a developer account in Latch's website: https://latch.elevenpaths.com. On the upper right side, click on "Developer area".
 

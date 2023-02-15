@@ -2,3 +2,7 @@ __pycache__/
 latch.pyc
 .idea
 *.pyc
+.env
+.python-version
+dist/
+src/
