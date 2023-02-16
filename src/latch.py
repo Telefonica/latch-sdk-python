@@ -1,4 +1,3 @@
-
 '''
  This library offers an API to use Latch in a python environment.
  Copyright (C) 2013 Telefonica Digital
@@ -18,30 +17,15 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 '''
 
-import json
+from latchapp import LatchApp
 
 
-class Error(object):
+class Latch(LatchApp):
 
-    def __init__(self, json_data):
-        '''
-        Constructor
-        '''
-
-        self.code = json_data['code']
-        self.message = json_data['message']
-
-    def get_code(self):
-        return self.code
-
-    def get_message(self):
-        return self.message
-
-    def to_json(self):
-        return {"code" : self.code, "message" : self.message}
-
-    def __repr__(self):
-        return json.dumps(self.to_json())
-
-    def __str__(self):
-        return self.__repr__()
+    def __init__(self, app_id, secret_key):
+        """
+        Create an instance of the class with the Application ID and secret obtained from Eleven Paths
+        @param $app_id
+        @param $secret_key
+        """
+        super(Latch, self).__init__(app_id, secret_key)

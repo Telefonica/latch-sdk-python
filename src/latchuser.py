@@ -1,4 +1,4 @@
-'''
+"""
  This library offers an API to use LatchAuth in a python environment.
  Copyright (C) 2013 Telefonica Digital
 
@@ -15,7 +15,7 @@
  You should have received a copy of the GNU Lesser General Public
  License along with this library if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-'''
+"""
 
 from latchauth import LatchAuth
 
@@ -23,11 +23,11 @@ from latchauth import LatchAuth
 class LatchUser(LatchAuth):
 
     def __init__(self, user_id, secret_key):
-        '''
+        """
         Create an instance of the class with the User ID and secret obtained from Eleven Paths
         @param $user_id
         @param $secret_key
-        '''
+        """
         super(LatchUser, self).__init__(user_id, secret_key)
 
     def get_subscription(self):
