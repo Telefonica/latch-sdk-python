@@ -1,4 +1,3 @@
-
 '''
  This library offers an API to use Latch in a python environment.
  Copyright (C) 2013 Eleven Paths
@@ -38,7 +37,7 @@ class Error(object):
         return self.message
 
     def to_json(self):
-        return {"code" : self.code, "message" : self.message}
+        return {"code": self.code, "message": self.message}
 
     def __repr__(self):
         return json.dumps(self.to_json())

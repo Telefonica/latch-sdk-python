@@ -12,6 +12,12 @@
 
 #### USING THE SDK IN PYTHON ####
 
+
+* Install "latch-sdk-telefonica"
+```
+	pip install latch-sdk-telefonica
+```
+
 * Import "latch" module.
 ```
 	import latch
