@@ -3,5 +3,6 @@ latch.pyc
 .idea
 *.pyc
 .env
-dist
-src/latch_sdk_telefonica.egg-info
+.python-version
+dist/
+src/
