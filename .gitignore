@@ -3,6 +3,6 @@ latch.pyc
 .idea
 *.pyc
 .env
+dist
 .python-version
-dist/
 src/
