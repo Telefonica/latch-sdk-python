@@ -20,7 +20,8 @@ import sys
 import os
 import logging
 
-from src import latch
+from src import latch, latchuser
+
 
 logging.basicConfig()
 
@@ -28,8 +29,11 @@ current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 
-APP_ID = "<YOUR-APP-ID>"
-SECRET_KEY = "<YOUR-SECRET-ID>"
+APP_ID = "<YOUR APP_ID>"
+SECRET_KEY = "<YOUR SECRET"
+
+USER_ID = "LCy9wDL8dDuaXjbp3BFN"
+USER_SECRET = "E7rfHd4NqDtBrVXjYpwwuwLVaNjgYUjC2ZyX98Fw"
 
 WEB3WALLET = ""
 WEB3SIGNATURE = ""
@@ -59,6 +63,16 @@ def example_unpair(account_id):
     get_status(api, account_id)
 
 
+def example_create_web3_app():
+    api = latchuser.LatchUser(USER_ID, USER_SECRET)
+    SIGNATURE = "0xb68aba645ac21573034546a92f164022619639526e5c6e2b8a491dedfe4291445cc6bc9a862674c87731aa944a5b5d4c303c21a5bc43164fcce5c4bf41171ebc1c"
+    NAME = "app_sdk2"
+    WALLET = "0x7fd12f68757721e7671979db0eef8a8ddcfd69db"
+    SC_ADDRESS = "0xCa13E35b0921a08Bf0eCC0152a21fA5FE5E2A96d"
+    MESSAGE = "message"
+    api.create_web3_app(NAME, WALLET, SIGNATURE, SC_ADDRESS, MESSAGE)
+
+
 def get_status(api, account_id):
     response = api.status(account_id)
     if response.get_error() != "":
@@ -70,5 +84,6 @@ def get_status(api, account_id):
 
 
 if __name__ == '__main__':
-    example_pair()
+    # example_pair()
+    example_create_web3_app()
     # example_unpair(ACCOUNT_ID)

@@ -24,9 +24,9 @@ import time
 
 class LatchAuth(object):
     API_VERSION = "1.0"
-    API_HOST = "latch.telefonica.com"
-    API_PORT = 443
-    API_HTTPS = True
+    API_HOST = "localhost"
+    API_PORT = 9000
+    API_HTTPS = False
     API_PROXY = None
     API_PROXY_PORT = None
     API_CHECK_STATUS_URL = "/api/" + API_VERSION + "/status"
@@ -40,6 +40,7 @@ class LatchAuth(object):
     API_SUBSCRIPTION_URL = "/api/" + API_VERSION + "/subscription"
     API_APPLICATION_URL = "/api/" + API_VERSION + "/application"
     API_INSTANCE_URL = "/api/" + API_VERSION + "/instance"
+    API_WEB3_APPLICATION = "/api/" + API_VERSION + "/applicationWeb3"
 
     AUTHORIZATION_HEADER_NAME = "Authorization"
     DATE_HEADER_NAME = "X-11Paths-Date"

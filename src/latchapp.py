@@ -236,3 +236,5 @@ class LatchApp(LatchAuth):
         else:
             return self._http("DELETE",
                               self.API_INSTANCE_URL + "/" + account_id + "/op/" + operation_id + "/i/" + instance_id)
+
+

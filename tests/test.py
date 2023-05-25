@@ -84,5 +84,6 @@ class MyTestCase(unittest.TestCase):
         assert response.get_data()['operations'][self.app_id] == {'status': 'on'}
 
 
+
 if __name__ == '__main__':
     unittest.main()

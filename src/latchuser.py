@@ -59,3 +59,8 @@ class LatchUser(LatchAuth):
             'email': contact_email
         }
         return self._http("POST", self.API_APPLICATION_URL + "/" + application_id, None, params)
+
+    def create_web3_app(self, name, wallet, signature, sc_address, message):
+        params = {'name': name, 'message': message, 'signature': signature, 'web3Wallet': wallet,
+                  'scAddress': sc_address}
+        return self._http("POST", self.API_WEB3_APPLICATION, None, params)
