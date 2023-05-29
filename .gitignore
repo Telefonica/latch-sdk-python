@@ -6,3 +6,5 @@ latch.pyc
 dist
 .python-version
 src/
+.DS_Store
+
