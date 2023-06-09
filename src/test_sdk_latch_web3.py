@@ -42,7 +42,9 @@ ACCOUNT_ID = ""
 
 
 def example_pair():
+
     api = latch.Latch(APP_ID, SECRET_KEY)
+    api.set_host("latch-dev.d-consumer.com")
     pairing_code = input("Enter the pairing code: ")
     response = api.pair(pairing_code, WEB3WALLET, WEB3SIGNATURE)
     if response.get_error() != "":
@@ -66,11 +68,15 @@ def example_unpair(account_id):
 def example_create_web3_app():
     api = latchuser.LatchUser(USER_ID, USER_SECRET)
     SIGNATURE = "0xb68aba645ac21573034546a92f164022619639526e5c6e2b8a491dedfe4291445cc6bc9a862674c87731aa944a5b5d4c303c21a5bc43164fcce5c4bf41171ebc1c"
-    NAME = "app_sdk2"
+    NAME = "app_sdk205"
     WALLET = "0x7fd12f68757721e7671979db0eef8a8ddcfd69db"
     SC_ADDRESS = "0xCa13E35b0921a08Bf0eCC0152a21fA5FE5E2A96d"
     MESSAGE = "message"
-    api.create_web3_app(NAME, WALLET, SIGNATURE, SC_ADDRESS, MESSAGE)
+    #MESSAGE = None
+    api_response = api.create_web3_app(NAME, WALLET, SIGNATURE, SC_ADDRESS, MESSAGE)
+    if api_response.get_error() != "":
+        logging.info(f"Status: {api_response.data}")
+
 
 
 def get_status(api, account_id):
@@ -83,7 +89,19 @@ def get_status(api, account_id):
         logging.info(f"Status: {response.data}")
 
 
+def example_operations(account_id):
+    api = latch.Latch(APP_ID, SECRET_KEY)
+    api_response = api.get_operations()
+    operation_id = "qCR9BYZQZgsH44iX9JHH"
+    instance_id = "DTGNWRb86T67mAfY7Mur"
+    api_response = api.lock(account_id, operation_id)
+    api_response = api.create_instance("instance1", account_id, operation_id)
+    api_response = api.create_instance("instance1", account_id)
+    print(api_response)
+
+
 if __name__ == '__main__':
-    # example_pair()
-    example_create_web3_app()
+    example_pair()
+    # example_create_web3_app()
+    #example_operations(ACCOUNT_ID)
     # example_unpair(ACCOUNT_ID)
