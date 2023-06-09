@@ -67,13 +67,11 @@ def example_unpair(account_id):
 
 def example_create_web3_app():
     api = latchuser.LatchUser(USER_ID, USER_SECRET)
-    SIGNATURE = "0xb68aba645ac21573034546a92f164022619639526e5c6e2b8a491dedfe4291445cc6bc9a862674c87731aa944a5b5d4c303c21a5bc43164fcce5c4bf41171ebc1c"
     NAME = "app_sdk205"
-    WALLET = "0x7fd12f68757721e7671979db0eef8a8ddcfd69db"
     SC_ADDRESS = "0xCa13E35b0921a08Bf0eCC0152a21fA5FE5E2A96d"
-    MESSAGE = "message"
-    #MESSAGE = None
-    api_response = api.create_web3_app(NAME, WALLET, SIGNATURE, SC_ADDRESS, MESSAGE)
+    MESSAGE_TO_SIGN = "message"
+    api_response = api.create_web3_app(NAME, WEB3WALLET, WEB3SIGNATURE, SC_ADDRESS, MESSAGE_TO_SIGN)
+
     if api_response.get_error() != "":
         logging.info(f"Status: {api_response.data}")
 
