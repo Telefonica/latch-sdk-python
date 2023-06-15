@@ -33,10 +33,10 @@ APP_ID = "<YOUR APP_ID>"
 SECRET_KEY = "<YOUR SECRET"
 
 USER_ID = "LCy9wDL8dDuaXjbp3BFN"
-USER_SECRET = "E7rfHd4NqDtBrVXjYpwwuwLVaNjgYUjC2ZyX98Fw"
+USER_SECRET = "AMuRMuAriHNVipRneKWeLLY6XrKmKCr6Zqapnzcm"
 
-WEB3WALLET = ""
-WEB3SIGNATURE = ""
+WEB3WALLET = "0x7fd12f68757721e7671979db0eef8a8ddcfd69db"
+WEB3SIGNATURE = "0xb68aba645ac21573034546a92f164022619639526e5c6e2b8a491dedfe4291445cc6bc9a862674c87731aa944a5b5d4c303c21a5bc43164fcce5c4bf41171ebc1c"
 
 ACCOUNT_ID = ""
 
@@ -67,13 +67,15 @@ def example_unpair(account_id):
 
 def example_create_web3_app():
     api = latchuser.LatchUser(USER_ID, USER_SECRET)
-    NAME = "app_sdk205"
+    NAME = "test6666"
     SC_ADDRESS = "0xCa13E35b0921a08Bf0eCC0152a21fA5FE5E2A96d"
     MESSAGE_TO_SIGN = "message"
-    api_response = api.create_web3_app(NAME, WEB3WALLET, WEB3SIGNATURE, SC_ADDRESS, MESSAGE_TO_SIGN)
+    BLOCKCHAIN = "mumbai"
+
+    api_response = api.create_web3_app(NAME, WEB3WALLET, WEB3SIGNATURE, SC_ADDRESS, MESSAGE_TO_SIGN, BLOCKCHAIN)
 
     if api_response.get_error() != "":
-        logging.info(f"Status: {api_response.data}")
+        logging.error(f"Status: {api_response.data}")
 
 
 
@@ -99,7 +101,7 @@ def example_operations(account_id):
 
 
 if __name__ == '__main__':
-    example_pair()
-    # example_create_web3_app()
+    #example_pair()
+    example_create_web3_app()
     #example_operations(ACCOUNT_ID)
     # example_unpair(ACCOUNT_ID)

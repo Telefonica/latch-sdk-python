@@ -24,9 +24,9 @@ import time
 
 class LatchAuth(object):
     API_VERSION = "1.0"
-    API_HOST = "latch.telefonica.com"
-    API_PORT = 443
-    API_HTTPS = True
+    API_HOST = "localhost"
+    API_PORT = 9000
+    API_HTTPS = False
     API_PROXY = None
     API_PROXY_PORT = None
     API_CHECK_STATUS_URL = "/api/" + API_VERSION + "/status"
@@ -51,6 +51,10 @@ class LatchAuth(object):
 
     X_11PATHS_HEADER_PREFIX = "X-11paths-"
     X_11PATHS_HEADER_SEPARATOR = ":"
+
+    @staticmethod
+    def set_port(port):
+        LatchAuth.API_PORT = port
 
     @staticmethod
     def set_host(host):
