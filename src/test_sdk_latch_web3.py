@@ -57,6 +57,20 @@ def example_pair():
         get_status(api, account_id)
         return account_id
 
+def example_pair_with_id(account_id):
+    api = latch.Latch(APP_ID, SECRET_KEY)
+    api.set_host("latch-dev.d-consumer.com")
+    pairing_code = input("Enter the pairing code: ")
+    response = api.pair_with_id(pairing_code, account_id)
+    if response.get_error() != "":
+        logging.error(
+            f"Error in PAIR request with error_code: {response.get_error().get_code()}"
+            f" and message: {response.get_error().get_message()}")
+    else:
+        account_id = response.data.get("accountId")
+        logging.info(f"AccountId: {account_id}")
+        get_status(api, account_id)
+        return account_id
 
 def example_unpair(account_id):
     api = latch.Latch(APP_ID, SECRET_KEY)
@@ -81,6 +95,16 @@ def example_create_web3_app():
 
 def get_status(api, account_id):
     response = api.status(account_id)
+    if response.get_error() != "":
+        logging.error(
+            f"Error in get_status request with error_code: {response.get_error().get_code()}"
+            f" and message: {response.get_error().get_message()}")
+    else:
+        logging.info(f"Status: {response.data}")
+
+
+def get_status_operations(api, account_id):
+    response = api.status_operations(account_id)
     if response.get_error() != "":
         logging.error(
             f"Error in get_status request with error_code: {response.get_error().get_code()}"
