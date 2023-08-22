@@ -44,7 +44,8 @@ ACCOUNT_ID = ""
 def example_pair():
 
     api = latch.Latch(APP_ID, SECRET_KEY)
-    api.set_host("latch-dev.d-consumer.com")
+    api.set_host("latch.telefonica.com")
+
     pairing_code = input("Enter the pairing code: ")
     response = api.pair(pairing_code, WEB3WALLET, WEB3SIGNATURE)
     if response.get_error() != "":
@@ -59,7 +60,8 @@ def example_pair():
 
 def example_pair_with_id(account_id):
     api = latch.Latch(APP_ID, SECRET_KEY)
-    api.set_host("latch-dev.d-consumer.com")
+    api.set_host("latch.telefonica.com")
+
     pairing_code = input("Enter the pairing code: ")
     response = api.pair_with_id(pairing_code, account_id)
     if response.get_error() != "":
