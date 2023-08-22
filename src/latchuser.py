@@ -50,7 +50,8 @@ class LatchUser(LatchAuth):
     def get_applications(self):
         return self._http("GET", self.API_APPLICATION_URL)
 
-    def update_application(self, application_id, name, two_factor, lock_on_request, contact_phone, contact_email):
+    def update_application(self, application_id, name, two_factor,
+                           lock_on_request, contact_phone, contact_email):
         params = {
             'name': name,
             'two_factor': two_factor,
@@ -59,3 +60,11 @@ class LatchUser(LatchAuth):
             'email': contact_email
         }
         return self._http("POST", self.API_APPLICATION_URL + "/" + application_id, None, params)
+
+    def create_web3_app(self, name, wallet, signature, sc_address, message, blockchain):
+        params = {'name': name, 'message': message,
+                  'signature': signature, 'web3Wallet': wallet,
+                  'scAddress': sc_address,
+                  'blockchainId': blockchain
+                  }
+        return self._http("POST", self.API_WEB3_APPLICATION, None, params)
