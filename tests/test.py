@@ -30,10 +30,15 @@ ENV_VARS = dotenv_values("./.env")
 class MyTestCase(unittest.TestCase):
 
     def setUp(self):
+        # The id from a paired account with the app
         self.account_id = ENV_VARS["account_id"]
+        # The id from the app
         self.app_id = ENV_VARS["app_id"]
+        # The secret from the app
         self.secret_id = ENV_VARS["secret_id"]
+        # The user id from API User access key
         self.user_id = ENV_VARS["user_id"]
+        # The user secret from API User access key
         self.user_secret = ENV_VARS["user_secret"]
         self.api = latch.Latch(self.app_id, self.secret_id)
 
