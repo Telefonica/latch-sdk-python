@@ -236,3 +236,20 @@ class LatchApp(LatchAuth):
         else:
             return self._http("DELETE",
                               self.API_INSTANCE_URL + "/" + account_id + "/op/" + operation_id + "/i/" + instance_id)
+        
+    def create_totp(self, id, name):
+        params = { 'userId': id, 'commonName': name }
+        return self._http("POST", self.API_TOTP_URL, None, params)
+    
+    def get_totp(self, totpId):
+        return self._http("GET", self.API_TOTP_URL + "/" + totpId)
+    
+    def validate_totp(self, totpId, code):
+        params = { 'code': code }
+        return self._http("POST", self.API_TOTP_URL + "/" + totpId + "/validate", None, params)
+    
+    def delete_totp(self, totpId):
+        return self._http("DELETE", self.API_TOTP_URL + "/" + totpId)
+    
+    def check_control_status(self, controlId):
+        return self._http("GET", self.API_CONTROL_STATUS_CHECK_URL + "/" + controlId)

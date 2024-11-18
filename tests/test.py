@@ -83,6 +83,23 @@ class MyTestCase(unittest.TestCase):
         response = self.api.status(self.account_id)
         assert response.get_data()['operations'][self.app_id] == {'status': 'on'}
 
+    def test_crud_totp(self):
+        response = self.api.create_totp("123456", "totp_test_1")
+        totp_id = response.get_data()['totpId']
+        response = self.api.get_totp(totp_id)
+        assert response.get_data()['totpId'] == totp_id
+        response = self.api.validate_totp(totp_id, "123456")
+        assert response.error.get_message() == "Invalid totp code"
+        assert response.error.get_code() == 306
+        response = self.api.delete_totp(totp_id)
+        assert response is None
+
+    def test_check_control_status(self):
+        response = self.api.check_control_status('123456')
+        assert response.error.get_message() == "Authorization control not found"
+        assert response.error.get_code() == 1100
+
+
 
 if __name__ == '__main__':
     unittest.main()
