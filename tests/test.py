@@ -83,6 +83,8 @@ class MyTestCase(unittest.TestCase):
         application_id = response.get_data()['applicationId']
         response = latch_user.get_applications()
         assert application_id in response.get_data()['operations'].keys()
+        response = latch_user.remove_application(application_id)
+        assert response.get_data() == "" and response.get_error() == ""
 
     def test_get_status(self):
         response = self.api.status(self.account_id)
