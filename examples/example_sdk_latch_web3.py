@@ -53,6 +53,7 @@ def example_pair():
 
 
 def example_unpair(account_id):
+    account_id = input("Enter the account id (obtained during the pairing: ")
     api = latch.Latch(APP_ID, SECRET_KEY)
     response = api.unpair(account_id)
     logging.info(f"Status after unpair: {response.data}")
