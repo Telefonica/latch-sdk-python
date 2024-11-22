@@ -18,20 +18,20 @@
 """
 import sys
 import os
-import logging
-import json
 
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
-sys.path.append('./')
 
 from src import latch
+
+import logging
 
 logging.basicConfig(
     level=logging.INFO,  # Nivel de logging
     format='%(asctime)s - %(levelname)s - %(message)s',  # Formato del mensaje
 )
+
 console_handler = logging.StreamHandler()
 
 APP_ID = "<YOUR-APP-ID>"

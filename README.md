@@ -97,11 +97,10 @@ From the app: app_id, secret_id
 
 From the paired user: account_id (Id obtained when the user ir paired)
 
-You can run the tests with the command (PowerShell)
-```
-    python -m venv ./.venv
+You can run the tests with the command
+``` powershell
+    python3 -m venv ./.venv
     .\.venv\Scripts\Activate.ps1
     pip install -r .\requirements.txt
-    $env:PYTHONPATH='./src'; python3 -m unittest
-    python -m unittest
+    python3 -m unittest
 ```
