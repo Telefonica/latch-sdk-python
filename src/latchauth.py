@@ -23,7 +23,7 @@ import time
 
 
 class LatchAuth(object):
-    API_VERSION = "1.0"
+    API_VERSION = "3.0"
     API_HOST = "latch.tu.com"
     API_PORT = 443
     API_HTTPS = True
