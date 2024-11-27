@@ -41,7 +41,8 @@ ACCOUNT_ID = ""
 def example_pair():
     api = latch.Latch(APP_ID, SECRET_KEY)
     pairing_code = input("Enter the pairing code: ")
-    response = api.pair(pairing_code)
+    common_name = input("Enter alias for user: ")
+    response = api.pair(pairing_code, None, None, common_name)
     if response.get_error() != "":
         logging.error(
             f"Error in PAIR request with error_code: {response.get_error().get_code()}"

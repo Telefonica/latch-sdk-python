@@ -50,7 +50,7 @@ class MyTestCase(unittest.TestCase):
         self.api = latch.Latch(self.app_id, self.secret_id)
 
     def test_app_latch_pair_invalid_token(self):
-        response = self.api.pair("fP9zpf")
+        response = self.api.pair("fP9zpf", None,None, "test")
         assert response.error.get_message() == "Token not found or expired"
         assert response.error.get_code() == 206
 

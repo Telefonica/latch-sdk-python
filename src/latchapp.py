@@ -41,18 +41,28 @@ class LatchApp(LatchAuth):
             return self._http("POST", self.API_PAIR_WITH_ID_URL + "/" + account_id, None, params)
 
     @versionchanged(version='2.0', reason="This function has been refactored")
-    def pair_with_id(self, account_id, web3Wallet=None, web3Signature=None):
-        if web3Wallet is None or web3Signature is None:
+    def pair_with_id(self, account_id, web3Wallet=None, web3Signature=None, commonName=None):
+        if (web3Wallet is None or web3Signature is None) and (commonName is None):
             return self._http("GET", self.API_PAIR_WITH_ID_URL + "/" + account_id)
         else:
-            params = {"wallet": web3Wallet, "signature": web3Signature}
+            params = {}
+            if web3Wallet is not None and web3Signature is not None:
+                params["wallet"] = web3Wallet
+                params["signature"] = web3Signature
+            if commonName is not None:
+                params["commonName"] = commonName
             return self._http("POST", self.API_PAIR_WITH_ID_URL + "/" + account_id, None, params)
 
-    def pair(self, token, web3Wallet=None, web3Signature=None):
-        if web3Wallet is None or web3Signature is None:
+    def pair(self, token, web3Wallet=None, web3Signature=None, commonName=None):
+        if (web3Wallet is None or web3Signature is None) and (commonName is None):
             return self._http("GET", self.API_PAIR_URL + "/" + token)
         else:
-            params = {"wallet": web3Wallet, "signature": web3Signature}
+            params = {}
+            if web3Wallet is not None and web3Signature is not None:
+                params["wallet"] = web3Wallet
+                params["signature"] = web3Signature
+            if commonName is not None:
+                params["commonName"] = commonName
             return self._http("POST", self.API_PAIR_URL + "/" + token, None, params)
 
     def status(self, account_id, silent=False, nootp=False):
