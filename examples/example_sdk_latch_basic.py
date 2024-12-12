@@ -78,7 +78,7 @@ def example_get_status(account_id):
         if response.get_data()['operations'][APP_ID]['status'] == 'on':
             logging.info(f"your latch is open and you are able to perform action")
         elif response.get_data()['operations'][APP_ID]['status'] == 'off':
-            logging.info(f"Your latch is lock and you can not be allowed to perform action")
+            logging.info(f"Your latch is locked and you are not allowed to perform action")
         else:
             logging.info(f"Error processing  the response")
 
