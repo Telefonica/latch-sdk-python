@@ -3,8 +3,9 @@ latch.pyc
 .idea
 *.pyc
 .env
+.venv
 dist
 .python-version
 src/
 .DS_Store
-
+.vscode

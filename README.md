@@ -5,9 +5,9 @@
 
 * Python.
 
-* Read API documentation (https://latch.telefonica.com/www/developers/doc_api).
+* Read API documentation (https://latch.tu.com/www/developers/doc_api).
 
-* To get the "Application ID" and "Secret", (fundamental values for integrating Latch in any application), it’s necessary to register a developer account in Latch's website: https://latch.telefonica.com. On the upper right side, click on "Developer area"
+* To get the "Application ID" and "Secret", (fundamental values for integrating Latch in any application), it’s necessary to register a developer account in Latch's website: https://latch.tu.com. On the upper right side, click on "Developer area"
 
 
 #### USING THE SDK IN PYTHON ####
@@ -76,4 +76,31 @@ The two additional parameters are:
 ```
 
 
-You have an example of use in the file [example for web3 app](src/test_sdk_latch_web3.py)
+You have an example of use in the file [example for web3 app](examples/example_sdk_latch_web3.py)
+
+# Tests
+
+To run the tests you need a latch account with a paired user and an activated TOTP server,
+and fill an .env file with the following
+
+```
+    user_id = <user_id>
+    user_secret = <user_secret>
+    app_id = <app_id>
+    secret_id = <secret_id>
+    account_id = <account_id>
+```
+
+API User Access Keys: user_id, user_secret
+
+From the app: app_id, secret_id
+
+From the paired user: account_id (Id obtained when the user ir paired)
+
+You can run the tests with the command
+``` powershell
+    python3 -m venv ./.venv
+    .\.venv\Scripts\Activate.ps1
+    pip install -r .\requirements.txt
+    python3 -m unittest
+```

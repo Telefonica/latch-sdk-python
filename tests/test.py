@@ -1,6 +1,6 @@
 """
  This library offers an API to use LatchAuth in a python environment.
- Copyright (C) 2023 Telefonica Digital
+ Copyright (C) 2024 Telefonica Innovación Digital
 
  This library is free software you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,13 @@
  License along with this library if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 """
+import sys
+import os
+
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+
 import unittest
 from src import latch
 from src.latchuser import LatchUser
@@ -30,15 +37,20 @@ ENV_VARS = dotenv_values("./.env")
 class MyTestCase(unittest.TestCase):
 
     def setUp(self):
+        # The id from a paired account with the app
         self.account_id = ENV_VARS["account_id"]
+        # The id from the app
         self.app_id = ENV_VARS["app_id"]
+        # The secret from the app
         self.secret_id = ENV_VARS["secret_id"]
+        # The user id from API User access key
         self.user_id = ENV_VARS["user_id"]
+        # The user secret from API User access key
         self.user_secret = ENV_VARS["user_secret"]
         self.api = latch.Latch(self.app_id, self.secret_id)
 
     def test_app_latch_pair_invalid_token(self):
-        response = self.api.pair("fP9zpf")
+        response = self.api.pair("fP9zpf", None,None, "test")
         assert response.error.get_message() == "Token not found or expired"
         assert response.error.get_code() == 206
 
@@ -78,10 +90,29 @@ class MyTestCase(unittest.TestCase):
         application_id = response.get_data()['applicationId']
         response = latch_user.get_applications()
         assert application_id in response.get_data()['operations'].keys()
+        response = latch_user.remove_application(application_id)
+        assert response.get_data() == "" and response.get_error() == ""
 
     def test_get_status(self):
         response = self.api.status(self.account_id)
         assert response.get_data()['operations'][self.app_id] == {'status': 'on'}
+
+    def test_crud_totp(self):
+        response = self.api.create_totp("123456", "totp_test_1")
+        totp_id = response.get_data()['totpId']
+        response = self.api.get_totp(totp_id)
+        assert response.get_data()['totpId'] == totp_id
+        response = self.api.validate_totp(totp_id, "123456")
+        assert response.error.get_message() == "Invalid totp code"
+        assert response.error.get_code() == 306
+        response = self.api.delete_totp(totp_id)
+        assert response is None
+
+    def test_check_control_status(self):
+        response = self.api.check_control_status('123456')
+        assert response.error.get_message() == "Authorization control not found"
+        assert response.error.get_code() == 1100
+
 
 
 if __name__ == '__main__':

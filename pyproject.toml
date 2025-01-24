@@ -1,6 +1,6 @@
 [project]
 name = "latch-sdk-telefonica"
-version = "2.0.2"
+version = "2.1.0"
 authors = [
   { name="Telefonica Latch", email="soporte.latch@telefonica.com" },
 ]
